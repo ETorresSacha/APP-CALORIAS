@@ -1,20 +1,20 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, SafeAreaView, Platform } from "react-native";
-import Home from "./src/views/home/Home";
+import Routes from "./src/routes/Routes";
+import Prueba from "./src/routes/Prueba";
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <View
-        style={{
-          paddingHorizontal: 15,
+
+
+        <Routes style={{
           paddingTop: Platform.OS === "android" && 30,
-        }}
-      >
-        <Home />
-        <StatusBar style="auto" />
-      </View>
-    </SafeAreaView>
+        }}>
+
+          <StatusBar style="auto" />
+        </Routes>
+
+
   );
 }
 
