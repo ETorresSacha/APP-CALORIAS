@@ -5,15 +5,12 @@ import Prueba from "./src/routes/Prueba";
 
 export default function App() {
   return (
-
-
+ 
         <Routes style={{
           paddingTop: Platform.OS === "android" && 30,
         }}>
-
           <StatusBar style="auto" />
         </Routes>
-
 
   );
 }
