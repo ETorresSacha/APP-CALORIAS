@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,15 +7,18 @@ import {
   Image,
   TextInput,
   Alert,
+  ScrollView,
 } from "react-native";
 import { Button, Icon, Input } from "@rneui/themed";
 import Header from "../../components/header/Header";
 import AddFoodModal from "../../components/addFoodModal/AddFoodModal";
 import UseFoodStorage from "../../components/hooks/UseFoodStorage";
+import MealItem from "../../components/mealItem/MealItem";
 
 const AddFood = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [foods, setFoods] = useState([]);
+  const [search, setSearch] = useState("");
   const { onGetFood } = UseFoodStorage();
 
   const loadFoods = async () => {
@@ -28,12 +31,30 @@ const AddFood = () => {
     }
   };
 
+  useEffect(() => {
+    loadFoods().catch(null);
+  }, []);
+
   const handleModalClose = async (shouldUpdate) => {
     if (shouldUpdate) {
       Alert.alert("Comida guardada exitosamente");
       loadFoods();
     }
     setIsVisible(false);
+  };
+
+  const handleSearchPress = async () => {
+    try {
+      const result = await onGetFood();
+      setFoods(
+        result.filter((item) =>
+          item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+        )
+      );
+    } catch (error) {
+      console.error(error);
+      setFoods([]);
+    }
   };
   return (
     <View style={styles.container}>
@@ -54,7 +75,11 @@ const AddFood = () => {
       </View>
       <View style={styles.addFoodContainer}>
         <View style={styles.containerTextAddFood}>
-          <Input placeholder="apples, banana, etc" />
+          <Input
+            placeholder="apples, banana, etc"
+            value={search}
+            onChangeText={(text) => setSearch(text)}
+          />
         </View>
         <View>
           <Button
@@ -62,9 +87,15 @@ const AddFood = () => {
             radius="lg"
             color="#ade8af"
             titleStyle={styles.btnSearch}
+            onPress={handleSearchPress}
           />
         </View>
       </View>
+      <ScrollView style={styles.content}>
+        {foods.map((meal, index) => (
+          <MealItem key={`my-meal-item-${meal.name}-${index}`} {...meal} />
+        ))}
+      </ScrollView>
       <AddFoodModal visible={isVisible} onClose={handleModalClose} />
     </View>
   );
@@ -83,6 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "flex",
     marginVertical: 24,
   },
+  content: {},
   containerTextAddFood: {
     flex: 1,
     justifyContent: "center",
