@@ -5,9 +5,11 @@ import { useNavigation } from "@react-navigation/native";
 
 const SubHeader = () => {
   const navigation = useNavigation();
+
   const handlePressAddCalorias = () => {
     navigation.navigate("AddCalorias");
   };
+
   return (
     <View style={styles.conteiner}>
       <View style={styles.leftConteiner}>

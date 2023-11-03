@@ -7,9 +7,22 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Alert,
 } from "react-native";
+import UseFoodStorage from "../hooks/UseFoodStorage";
 
 const MealItem = ({ calories, name, portion }) => {
+  const { onSaveTodayFood } = UseFoodStorage();
+
+  const handleAddItemPress = async () => {
+    try {
+      await onSaveTodayFood({ calories, name, portion });
+      Alert.alert("Comida agregada al dia");
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Comida no agregada");
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
@@ -21,6 +34,7 @@ const MealItem = ({ calories, name, portion }) => {
           icon={<Icon name="add-circle-outline" />}
           type="clear"
           style={styles.iconButton}
+          onPress={handleAddItemPress}
         />
         <Text style={styles.calories}>{calories} cal</Text>
       </View>
