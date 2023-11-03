@@ -6,14 +6,33 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  Alert,
 } from "react-native";
 import { Button, Icon, Input } from "@rneui/themed";
 import Header from "../../components/header/Header";
 import AddFoodModal from "../../components/addFoodModal/AddFoodModal";
+import UseFoodStorage from "../../components/hooks/UseFoodStorage";
 
 const AddFood = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const handleModalClose = () => {
+  const [foods, setFoods] = useState([]);
+  const { onGetFood } = UseFoodStorage();
+
+  const loadFoods = async () => {
+    // Trae los datos guardados del local storage
+    try {
+      const foodsResponse = await onGetFood();
+      setFoods(foodsResponse);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleModalClose = async (shouldUpdate) => {
+    if (shouldUpdate) {
+      Alert.alert("Comida guardada exitosamente");
+      loadFoods();
+    }
     setIsVisible(false);
   };
   return (

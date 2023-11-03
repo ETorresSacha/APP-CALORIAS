@@ -8,11 +8,13 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
+import UseFoodStorage from "../hooks/UseFoodStorage";
 
 const AddFoodModal = ({ onClose, visible }) => {
   const [calories, setCalories] = useState("");
   const [name, setName] = useState("");
   const [portion, setPortion] = useState("");
+  const { onSaveFood } = UseFoodStorage();
 
   useEffect(() => {
     setCalories("");
@@ -20,14 +22,23 @@ const AddFoodModal = ({ onClose, visible }) => {
     setPortion("");
   }, [visible]);
 
-  const handleAddPress = () => {
-    onClose();
+  const handleAddPress = async () => {
+    try {
+      await onSaveFood({
+        calories,
+        name,
+        portion,
+      });
+      onClose(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <Modal
       visible={visible}
-      onRequestClose={onClose}
+      onRequestClose={() => onClose()}
       transparent
       animationType="slide"
     >
@@ -36,7 +47,7 @@ const AddFoodModal = ({ onClose, visible }) => {
           <View style={styles.closeContainer}>
             <Button
               icon={<Icon name="close" size={28} />}
-              onPress={onClose}
+              onPress={() => onClose()}
               type="clear"
             />
           </View>
