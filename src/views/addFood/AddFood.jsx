@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,8 +9,13 @@ import {
 } from "react-native";
 import { Button, Icon, Input } from "@rneui/themed";
 import Header from "../../components/header/Header";
+import AddFoodModal from "../../components/addFoodModal/AddFoodModal";
 
 const AddFood = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const handleModalClose = () => {
+    setIsVisible(false);
+  };
   return (
     <View style={styles.container}>
       <Header />
@@ -24,6 +29,7 @@ const AddFood = () => {
             radius="lg"
             color="#4ecb71"
             style={styles.btn}
+            onPress={() => setIsVisible(true)}
           ></Button>
         </View>
       </View>
@@ -40,6 +46,7 @@ const AddFood = () => {
           />
         </View>
       </View>
+      <AddFoodModal visible={isVisible} onClose={handleModalClose} />
     </View>
   );
 };
