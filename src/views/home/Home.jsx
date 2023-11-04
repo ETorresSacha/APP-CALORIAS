@@ -4,14 +4,40 @@ import Header from "../../components/header/Header";
 import SubHeader from "../../components/subHeader/SubHeader";
 import { useFocusEffect } from "@react-navigation/native";
 import UseFoodStorage from "../../components/hooks/UseFoodStorage";
+import TodayCalories from "../../components/todayCalories/TodayCalories";
+
+const totalCaloriesPerDay = 2000;
 
 const Home = () => {
   const [todayFood, setTodayFood] = useState([]);
+  const [todayStatistics, setTodayStatistics] = useState({});
   const { onGetTodayFood } = UseFoodStorage();
+
+  // Calculos de las estadisticas
+  const calculateTodayStatistics = (meals) => {
+    try {
+      const caloriesConsumed = meals.reduce(
+        (acum, curr) => acum + Number(curr.calories),
+        0
+      );
+      const remainingCalories = totalCaloriesPerDay - caloriesConsumed;
+      const percentage = (caloriesConsumed / totalCaloriesPerDay) * 100;
+
+      setTodayStatistics({
+        consumed: caloriesConsumed,
+        percentage,
+        remaining: remainingCalories,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const loadTodayFood = useCallback(async () => {
     try {
       const todayFoodResponse = await onGetTodayFood();
+
+      calculateTodayStatistics(todayFoodResponse);
       setTodayFood(todayFoodResponse);
     } catch (error) {
       setTodayFood([]);
@@ -19,21 +45,16 @@ const Home = () => {
     }
   }, []);
 
-  // useFocusEffect(() => {
-  //   loadTodayFood().catch(null);
-  // }, []);
-
   useFocusEffect(
     useCallback(() => {
-      // Your code here
       loadTodayFood().catch(null);
     }, [loadTodayFood])
   );
-  console.log(todayFood);
   return (
     <View style={styles.container}>
       <Header />
       <SubHeader />
+      <TodayCalories {...todayStatistics} />
     </View>
   );
 };

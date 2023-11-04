@@ -1,5 +1,6 @@
 import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { isToday } from "date-fns";
 
 const MY_FOOD_KEY = "@MyFood:Key";
 const MY_TODAY_FOOD_KEY = "@MyTodayFood:Key";
@@ -81,7 +82,11 @@ const UseFoodStorage = () => {
 
       if (foods !== null) {
         const parsedFoods = JSON.parse(foods);
-        return Promise.resolve(parsedFoods);
+        return Promise.resolve(
+          parsedFoods.filter(
+            (meal) => meal.date && isToday(new Date(meal.date))
+          )
+        );
       }
     } catch (error) {
       return Promise.reject(error);
