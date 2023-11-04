@@ -5,12 +5,20 @@ import SubHeader from "../../components/subHeader/SubHeader";
 import { useFocusEffect } from "@react-navigation/native";
 import UseFoodStorage from "../../components/hooks/UseFoodStorage";
 import TodayCalories from "../../components/todayCalories/TodayCalories";
+import TodayMeals from "../../components/todayMeals/TodayMeals";
 
 const totalCaloriesPerDay = 2000;
 
 const Home = () => {
   const [todayFood, setTodayFood] = useState([]);
-  const [todayStatistics, setTodayStatistics] = useState({});
+
+  const [todayStatistics, setTodayStatistics] = useState({
+    total: totalCaloriesPerDay,
+    consumed: 0,
+    remaining: 0,
+    percentage: 0,
+  });
+
   const { onGetTodayFood } = UseFoodStorage();
 
   // Calculos de las estadisticas
@@ -55,6 +63,7 @@ const Home = () => {
       <Header />
       <SubHeader />
       <TodayCalories {...todayStatistics} />
+      <TodayMeals foods={todayFood} />
     </View>
   );
 };

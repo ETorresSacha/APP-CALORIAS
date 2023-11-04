@@ -11,13 +11,17 @@ import {
 } from "react-native";
 import UseFoodStorage from "../hooks/UseFoodStorage";
 
-const MealItem = ({ calories, name, portion }) => {
+const MealItem = ({ calories, name, portion, isAbleToAdd }) => {
   const { onSaveTodayFood } = UseFoodStorage();
 
-  const handleAddItemPress = async () => {
+  const handleIconPress = async () => {
     try {
-      await onSaveTodayFood({ calories, name, portion });
-      Alert.alert("Comida agregada al dia");
+      if (isAbleToAdd) {
+        await onSaveTodayFood({ calories, name, portion });
+        Alert.alert("Comida agregada al dia");
+      } else {
+        //!para cerrar
+      }
     } catch (error) {
       console.error(error);
       Alert.alert("Comida no agregada");
@@ -31,10 +35,10 @@ const MealItem = ({ calories, name, portion }) => {
       </View>
       <View style={styles.rightContainer}>
         <Button
-          icon={<Icon name="add-circle-outline" />}
+          icon={<Icon name={isAbleToAdd ? "add-circle-outline" : "close"} />}
           type="clear"
           style={styles.iconButton}
-          onPress={handleAddItemPress}
+          onPress={handleIconPress}
         />
         <Text style={styles.calories}>{calories} cal</Text>
       </View>
