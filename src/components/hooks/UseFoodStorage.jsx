@@ -62,9 +62,10 @@ const UseFoodStorage = () => {
   };
 
   //! Guardar información de comida del día de hoy
-  const handleSaveTodayFood = async ({ calories, name, portion }) => {
+  const handleSaveTodayFood = async ({ uuid, calories, name, portion }) => {
     try {
       const result = await saveInfoToStorage(MY_TODAY_FOOD_KEY, {
+        uuid,
         calories,
         name,
         portion,

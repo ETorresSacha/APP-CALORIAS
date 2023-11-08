@@ -44,6 +44,7 @@ const Home = () => {
   const loadTodayFood = useCallback(async () => {
     try {
       const todayFoodResponse = await onGetTodayFood();
+      console.log(todayFoodResponse);
 
       calculateTodayStatistics(todayFoodResponse);
       setTodayFood(todayFoodResponse);
@@ -58,6 +59,8 @@ const Home = () => {
       loadTodayFood().catch(null);
     }, [loadTodayFood])
   );
+
+  //console.log(todayFood);
   return (
     <View style={styles.container}>
       <Header />
