@@ -11,23 +11,38 @@ import {
 } from "react-native";
 import UseFoodStorage from "../hooks/UseFoodStorage";
 
-const MealItem = ({ uuid, calories, name, portion, isAbleToAdd }) => {
-  const { onSaveTodayFood } = UseFoodStorage();
+const MealItem = ({
+  uuid,
+  calories,
+  name,
+  portion,
+  isAbleToAdd,
+  onCompleteAddRemoveFood,
+}) => {
+  const { onSaveTodayFood, removeTodayFood } = UseFoodStorage();
 
   const handleIconPress = async () => {
     try {
       if (isAbleToAdd) {
-        console.log(uuid);
         await onSaveTodayFood({ uuid, calories, name, portion });
         Alert.alert("Comida agregada al dia");
       } else {
         //!para cerrar
+        await removeTodayFood(uuid);
+        Alert.alert("Comida removida");
+        onCompleteAddRemoveFood();
       }
     } catch (error) {
       console.error(error);
       Alert.alert("Comida no agregada");
     }
   };
+
+  // const handlecloseItem = async () => {
+  //   const todayFoodResponse = await onGetTodayFood();
+
+  //   const resultFilter =  todayFoodResponse.filter((element) =>)
+  // };
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>

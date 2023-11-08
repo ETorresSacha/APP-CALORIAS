@@ -2,13 +2,17 @@ import React from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import MealItem from "../mealItem/MealItem";
 
-const TodayMeals = ({ foods }) => {
+const TodayMeals = ({ foods, onCompleteAddRemoveFood }) => {
   return (
     <View style={StyleSheet.container}>
       <Text style={styles.title}>Comidas</Text>
       <ScrollView style={styles.content}>
         {foods?.map((meal, index) => (
-          <MealItem key={`today-meal-item-${meal.name}-${index}`} {...meal} />
+          <MealItem
+            key={`today-meal-item-${meal.name}-${index}`}
+            {...meal}
+            onCompleteAddRemoveFood={onCompleteAddRemoveFood}
+          />
         ))}
       </ScrollView>
     </View>

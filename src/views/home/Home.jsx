@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import Header from "../../components/header/Header";
 import SubHeader from "../../components/subHeader/SubHeader";
@@ -11,6 +11,7 @@ const totalCaloriesPerDay = 2000;
 
 const Home = () => {
   const [todayFood, setTodayFood] = useState([]);
+  console.log(todayFood.length);
 
   const [todayStatistics, setTodayStatistics] = useState({
     total: totalCaloriesPerDay,
@@ -44,7 +45,6 @@ const Home = () => {
   const loadTodayFood = useCallback(async () => {
     try {
       const todayFoodResponse = await onGetTodayFood();
-      console.log(todayFoodResponse);
 
       calculateTodayStatistics(todayFoodResponse);
       setTodayFood(todayFoodResponse);
@@ -66,7 +66,10 @@ const Home = () => {
       <Header />
       <SubHeader />
       <TodayCalories {...todayStatistics} />
-      <TodayMeals foods={todayFood} />
+      <TodayMeals
+        foods={todayFood}
+        onCompleteAddRemoveFood={() => loadTodayFood()}
+      />
     </View>
   );
 };

@@ -95,11 +95,27 @@ const UseFoodStorage = () => {
     }
   };
 
+  const handleRemoveTodayFood = async (uuid) => {
+    try {
+      const todayFood = await handleGetTodayFoods();
+
+      const filterItem = todayFood?.filter((element) => {
+        return element.uuid !== uuid;
+      });
+      await AsyncStorage.setItem(MY_TODAY_FOOD_KEY, JSON.stringify(filterItem));
+
+      return Promise.resolve();
+    } catch (error) {
+      return console.error(error);
+    }
+  };
+
   return {
     onSaveFood: handleSaveFood,
     onGetFood: handleGetFoods,
     onSaveTodayFood: handleSaveTodayFood,
     onGetTodayFood: handleGetTodayFoods,
+    removeTodayFood: handleRemoveTodayFood,
   };
 };
 
