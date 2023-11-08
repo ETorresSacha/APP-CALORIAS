@@ -56,6 +56,7 @@ const AddFood = () => {
       setFoods([]);
     }
   };
+  console.log(foods);
   return (
     <View style={styles.container}>
       <Header />

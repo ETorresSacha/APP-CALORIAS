@@ -33,9 +33,10 @@ const UseFoodStorage = () => {
   };
 
   //! Agregar la comida
-  const handleSaveFood = async ({ calories, name, portion }) => {
+  const handleSaveFood = async ({ uuid, calories, name, portion }) => {
     try {
       const result = await saveInfoToStorage(MY_FOOD_KEY, {
+        uuid,
         calories,
         name,
         portion,

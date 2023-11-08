@@ -9,6 +9,8 @@ import {
   Image,
 } from "react-native";
 import UseFoodStorage from "../hooks/UseFoodStorage";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 const AddFoodModal = ({ onClose, visible }) => {
   const [calories, setCalories] = useState("");
@@ -23,8 +25,11 @@ const AddFoodModal = ({ onClose, visible }) => {
   }, [visible]);
 
   const handleAddPress = async () => {
+    const uuid = uuidv4();
+
     try {
       await onSaveFood({
+        uuid,
         calories,
         name,
         portion,
