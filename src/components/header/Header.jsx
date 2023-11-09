@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 const user = {
   name: "Erik Torres Sacha",
-  uri: "https://www.cesurformacion.com/uploads/media/16-9-large/02/2302-que-es-la-imagen-personal.png?v=1-0",
+  uri: "https://media.licdn.com/dms/image/D4E03AQH-M4FFjGHveA/profile-displayphoto-shrink_400_400/0/1693329901508?e=1704931200&v=beta&t=07dlpl6eAU2K3xnJx0oL0-v76Br4jWK0Acj9BXkgCfc",
 };
 const Header = () => {
   return (

@@ -6,6 +6,7 @@ const MY_FOOD_KEY = "@MyFood:Key";
 const MY_TODAY_FOOD_KEY = "@MyTodayFood:Key";
 
 const UseFoodStorage = () => {
+  // GUARDAR INFORMACION
   const saveInfoToStorage = async (storageKey, meal) => {
     try {
       const currentSavedFood = await AsyncStorage.getItem(storageKey); // Trae todos los datos guardados en el local storage
@@ -32,7 +33,9 @@ const UseFoodStorage = () => {
     }
   };
 
-  //! Agregar la comida
+  //TODO--> METODOS PARA AGREGAR DIETAS (ADDFOOD)
+
+  //! POST
   const handleSaveFood = async ({ uuid, calories, name, portion }) => {
     try {
       const result = await saveInfoToStorage(MY_FOOD_KEY, {
@@ -47,7 +50,7 @@ const UseFoodStorage = () => {
     }
   };
 
-  //! Traer las comidas
+  //! GET
   const handleGetFoods = async () => {
     try {
       const foods = await AsyncStorage.getItem(MY_FOOD_KEY); // Trae los datos guardados para despues transformarlo en formato JSON
@@ -61,7 +64,25 @@ const UseFoodStorage = () => {
     }
   };
 
-  //! Guardar información de comida del día de hoy
+  //! DELETE
+  const handleDeleteAddFood = async (uuid) => {
+    try {
+      const addFood = await handleGetFoods();
+
+      const filterItem = addFood?.filter((element) => {
+        return element.uuid !== uuid;
+      });
+      await AsyncStorage.setItem(MY_FOOD_KEY, JSON.stringify(filterItem));
+
+      return Promise.resolve();
+    } catch (error) {
+      return console.error(error);
+    }
+  };
+
+  //TODO--> METODOS PARA AGREGAR LAS DIETAS AL DIA DE HOY (HOME)
+
+  //! POST
   const handleSaveTodayFood = async ({ uuid, calories, name, portion }) => {
     try {
       const result = await saveInfoToStorage(MY_TODAY_FOOD_KEY, {
@@ -77,7 +98,7 @@ const UseFoodStorage = () => {
     }
   };
 
-  //! Metodo para obtener info de comida del dia de hoy
+  //! GET
   const handleGetTodayFoods = async () => {
     try {
       const foods = await AsyncStorage.getItem(MY_TODAY_FOOD_KEY); // Trae los datos guardados para despues transformarlo en formato JSON
@@ -94,7 +115,8 @@ const UseFoodStorage = () => {
       return Promise.reject(error);
     }
   };
-  //! Metodo eliminar info de comida del dia de hoy
+
+  //! DELETE
   const handleRemoveTodayFood = async (uuid) => {
     try {
       const todayFood = await handleGetTodayFoods();
@@ -110,30 +132,13 @@ const UseFoodStorage = () => {
     }
   };
 
-  //! Metodo para eliminar item ADDFOOD
-
-  const handleDeleteAddFood = async (uuid) => {
-    try {
-      const addFood = await handleGetFoods();
-
-      const filterItem = addFood?.filter((element) => {
-        return element.uuid !== uuid;
-      });
-      await AsyncStorage.setItem(MY_FOOD_KEY, JSON.stringify(filterItem));
-
-      return Promise.resolve();
-    } catch (error) {
-      return console.error(error);
-    }
-  };
-
   return {
     onSaveFood: handleSaveFood,
     onGetFood: handleGetFoods,
+    deleteAddFood: handleDeleteAddFood,
     onSaveTodayFood: handleSaveTodayFood,
     onGetTodayFood: handleGetTodayFoods,
     removeTodayFood: handleRemoveTodayFood,
-    deleteAddFood: handleDeleteAddFood,
   };
 };
 
