@@ -38,11 +38,6 @@ const MealItem = ({
     }
   };
 
-  // const handlecloseItem = async () => {
-  //   const todayFoodResponse = await onGetTodayFood();
-
-  //   const resultFilter =  todayFoodResponse.filter((element) =>)
-  // };
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>

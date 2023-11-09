@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, ScrollView, Text } from "react-native";
 import Header from "../../components/header/Header";
 import SubHeader from "../../components/subHeader/SubHeader";
 import { useFocusEffect } from "@react-navigation/native";
@@ -11,7 +11,6 @@ const totalCaloriesPerDay = 2000;
 
 const Home = () => {
   const [todayFood, setTodayFood] = useState([]);
-  console.log(todayFood.length);
 
   const [todayStatistics, setTodayStatistics] = useState({
     total: totalCaloriesPerDay,
@@ -60,16 +59,18 @@ const Home = () => {
     }, [loadTodayFood])
   );
 
-  //console.log(todayFood);
   return (
     <View style={styles.container}>
       <Header />
       <SubHeader />
       <TodayCalories {...todayStatistics} />
-      <TodayMeals
-        foods={todayFood}
-        onCompleteAddRemoveFood={() => loadTodayFood()}
-      />
+      <Text style={styles.title}>Comidas</Text>
+      <ScrollView style={styles.content}>
+        <TodayMeals
+          foods={todayFood}
+          onCompleteAddRemoveFood={() => loadTodayFood()}
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -80,5 +81,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 12,
+  },
+  title: {
+    fontSize: 16,
+    paddingTop: 10,
+  },
+  content: {
+    marginVertical: 16,
   },
 });
