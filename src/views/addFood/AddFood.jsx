@@ -56,7 +56,7 @@ const AddFood = () => {
       setFoods([]);
     }
   };
-  console.log(foods);
+
   return (
     <View style={styles.container}>
       <Header />
@@ -98,6 +98,7 @@ const AddFood = () => {
             key={`my-meal-item-${meal.name}-${index}`}
             {...meal}
             isAbleToAdd={true}
+            loadFoods={() => loadFoods()}
           />
         ))}
       </ScrollView>

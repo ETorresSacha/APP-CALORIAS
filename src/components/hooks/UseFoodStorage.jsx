@@ -94,7 +94,7 @@ const UseFoodStorage = () => {
       return Promise.reject(error);
     }
   };
-
+  //! Metodo eliminar info de comida del dia de hoy
   const handleRemoveTodayFood = async (uuid) => {
     try {
       const todayFood = await handleGetTodayFoods();
@@ -110,12 +110,30 @@ const UseFoodStorage = () => {
     }
   };
 
+  //! Metodo para eliminar item ADDFOOD
+
+  const handleDeleteAddFood = async (uuid) => {
+    try {
+      const addFood = await handleGetFoods();
+
+      const filterItem = addFood?.filter((element) => {
+        return element.uuid !== uuid;
+      });
+      await AsyncStorage.setItem(MY_FOOD_KEY, JSON.stringify(filterItem));
+
+      return Promise.resolve();
+    } catch (error) {
+      return console.error(error);
+    }
+  };
+
   return {
     onSaveFood: handleSaveFood,
     onGetFood: handleGetFoods,
     onSaveTodayFood: handleSaveTodayFood,
     onGetTodayFood: handleGetTodayFoods,
     removeTodayFood: handleRemoveTodayFood,
+    deleteAddFood: handleDeleteAddFood,
   };
 };
 

@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import CircularProgress from "react-native-circular-progress-indicator";
 
 const TodayCalories = ({ total, consumed, remaining, percentage }) => {
+  console.log(total);
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>

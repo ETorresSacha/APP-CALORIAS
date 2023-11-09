@@ -1,14 +1,6 @@
 import { Button, Icon } from "@rneui/themed";
 import React from "react";
-import {
-  View,
-  Modal,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Alert,
-} from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import UseFoodStorage from "../hooks/UseFoodStorage";
 
 const MealItem = ({
@@ -18,8 +10,9 @@ const MealItem = ({
   portion,
   isAbleToAdd,
   onCompleteAddRemoveFood,
+  loadFoods,
 }) => {
-  const { onSaveTodayFood, removeTodayFood } = UseFoodStorage();
+  const { onSaveTodayFood, removeTodayFood, deleteAddFood } = UseFoodStorage();
 
   const handleIconPress = async () => {
     try {
@@ -38,19 +31,33 @@ const MealItem = ({
     }
   };
 
+  const handleDeleteItem = async () => {
+    await deleteAddFood(uuid);
+    Alert.alert("Dieta removida");
+    loadFoods(); // volvemos a cargar los datos
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.portion}>{portion}</Text>
+        <Text style={styles.portion}>{portion} g</Text>
       </View>
       <View style={styles.rightContainer}>
-        <Button
-          icon={<Icon name={isAbleToAdd ? "add-circle-outline" : "close"} />}
-          type="clear"
-          style={styles.iconButton}
-          onPress={handleIconPress}
-        />
+        <View style={styles.iconos}>
+          <Button
+            icon={<Icon name={isAbleToAdd ? "add-circle-outline" : "delete"} />}
+            type="clear"
+            style={styles.iconButton}
+            onPress={handleIconPress}
+          />
+          <Button
+            icon={<Icon name={isAbleToAdd ? "delete" : ""} />}
+            type="clear"
+            style={styles.iconButton}
+            onPress={handleDeleteItem}
+          />
+        </View>
         <Text style={styles.calories}>{calories} cal</Text>
       </View>
     </View>
@@ -76,17 +83,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-end",
   },
+  iconos: {
+    flexDirection: "row",
+
+    justifyContent: "center",
+  },
   name: {
     fontSize: 18,
     fontWeight: "500",
   },
   portion: {
-    fontSize: 13,
+    fontSize: 15,
+    paddingTop: 5,
     color: "#808080",
     fontWeight: "500",
   },
   calories: {
     fontSize: 15,
+    paddingRight: 18,
   },
   iconButton: {
     marginBottom: -8,

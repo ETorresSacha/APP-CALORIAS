@@ -13,7 +13,7 @@ const Home = () => {
   const [todayFood, setTodayFood] = useState([]);
 
   const [todayStatistics, setTodayStatistics] = useState({
-    total: totalCaloriesPerDay,
+    total: 0,
     consumed: 0,
     remaining: 0,
     percentage: 0,
@@ -32,6 +32,7 @@ const Home = () => {
       const percentage = (caloriesConsumed / totalCaloriesPerDay) * 100;
 
       setTodayStatistics({
+        total: totalCaloriesPerDay,
         consumed: caloriesConsumed,
         percentage,
         remaining: remainingCalories,
